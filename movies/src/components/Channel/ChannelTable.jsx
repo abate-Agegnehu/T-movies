@@ -9,13 +9,13 @@ import {
   TableRow,
   Paper,
   IconButton,
-} from "@mui/material";
+} from "@material-ui/core";
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   Visibility as ViewIcon,
   Cancel as DeactiveIcon,
-} from "@mui/icons-material";
+} from "@material-ui/icons";
 
 import updown from "../../images/updown.png";
 import DoneIcon from "@material-ui/icons/Done";
