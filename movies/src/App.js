@@ -13,5 +13,15 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<Login />} />
+          <Route path="/layout" element={<Layout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="channel" element={<Channel />} />
+            <Route path="program" element={<Program />} />
+          </Route>
+        </Routes>
+      </Router>
+    </div>
+  );
+}
 
 export default App;
