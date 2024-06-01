@@ -13,47 +13,23 @@ import DashboardNav from "../components/DashboardNav";
 import {
   LineChart,
   Line,
-  CartesianGrid,
   XAxis,
-  Tooltip,
   YAxis,
-  Legend,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
+import DepartmentChart from "../components/DepartmentChart";
 
 const data = [
-  { name: "2017", react: 32, angular: 37, vue: 60 },
-  { name: "2018", react: 42, angular: 42, vue: 54 },
-  { name: "2019", react: 51, angular: 41, vue: 54 },
-  { name: "2020", react: 60, angular: 37, vue: 28 },
-  { name: "2021", react: 51, angular: 31, vue: 27 },
-  { name: "2022", react: 95, angular: 44, vue: 49 },
+  { name: "MON", value1: 20, value2: 30, value3: 10, value4: 40, value5: 30 },
+  { name: "TUE", value1: 30, value2: 20, value3: 40, value4: 10, value5: 50 },
+  { name: "WED", value1: 40, value2: 50, value3: 20, value4: 30, value5: 40 },
+  { name: "THUR", value1: 50, value2: 40, value3: 30, value4: 20, value5: 60 },
+  { name: "FRI", value1: 60, value2: 30, value3: 50, value4: 10, value5: 70 },
+  { name: "SAT", value1: 70, value2: 20, value3: 40, value4: 30, value5: 80 },
+  { name: "SUN", value1: 80, value2: 60, value3: 30, value4: 20, value5: 90 },
 ];
-
-const lables = ["2017", "2018", "2019", "2020", "2021", "2022"];
-
-export const data2 = {
-  lables,
-  dataset: [
-    {
-      label: "React",
-      data: [32, 42, 51, 60, 51, 95],
-      backgroundColor: "#2196F3",
-      borderColor: "#2196F3",
-    },
-    {
-      label: "Angular",
-      data: [37, 42, 41, 37, 31, 44],
-      backgroundColor: "#F44236",
-      borderColor: "#F44236",
-    },
-    {
-      label: "Vue",
-      data: [60, 54, 54, 28, 27, 49],
-      backgroundColor: "#FFCA29",
-      borderColor: "#FFCA29",
-    },
-  ],
-};
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -80,6 +56,83 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "normal",
     margin: "0 0 10px 0",
   },
+  chartContainer: {
+    padding: "20px",
+    backgroundColor: "#fff",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    position: "relative",
+    width: "94%",
+   
+  },
+  chartTitle: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    backgroundColor: "#000",
+    color: "#fff",
+    padding: "15px 60px",
+    borderRadius: "4px",
+    fontSize: "18px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "10px 30px",
+      fontSize: "14px",
+    },
+  },
+  overallProgram: {
+    position: "absolute",
+    top: "40px",
+    right: "20px",
+    backgroundColor: "#000",
+    color: "#fff",
+    padding: "15px 40px",
+    borderRadius: "4px",
+    fontSize: "18px",
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: theme.spacing(3),
+      display: "none",
+      top: "40px",
+      right: "20px",
+    },
+  },
+  legendContainer: {
+    position: "absolute",
+    top: "120px",
+    right: "0",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: theme.spacing(3),
+      display: "none",
+    },
+  },
+  legendItem: {
+    display: "flex",
+    alignItems: "center",
+    marginRight: "20px",
+  },
+  legendColorBox: {
+    width: "20px",
+    height: "20px",
+    marginRight: "8px",
+    marginTop: "15px",
+    borderRadius: "50%",
+  },
+  legendText: {
+    marginTop: "15px",
+    fontSize: "20px",
+    fontWeight: "bold",
+  },
+  legendValue: {
+    marginTop: "15px",
+    marginLeft: "100px",
+    marginRight: "20px",
+    fontSize: "18px",
+    opacity: 0.8,
+  },
+  
 }));
 
 function Dashboard() {
@@ -87,7 +140,7 @@ function Dashboard() {
   return (
     <div className={classes.grow}>
       <DashboardNav />
-      <Container>
+      <Container style={{ marginBottom: "40px" }}>
         <Grid container spacing={3} className={classes.cardContainer}>
           <Grid item xs={12} sm={6} md={4}>
             <Card className={classes.card}>
@@ -145,21 +198,79 @@ function Dashboard() {
           </Grid>
         </Grid>
       </Container>
-      <LineChart width={600} height={300} data={data}>
-        <Line
-          type="monotone"
-          dataKey="react"
-          stroke="#2196F3"
-          strokeWidth={3}
-        />
-        <Line type="monotone" dataKey="angular" stroke="#F44" strokeWidth={3} />
-        <Line type="monotone" dataKey="vue" stroke="#2196F3" strokeWidth={3} />
-        <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-      </LineChart>
+
+      <DepartmentChart />
+      <Container className={classes.chartContainer}>
+        <Typography className={classes.chartTitle}>
+          Program with Type
+        </Typography>
+        <Typography className={classes.overallProgram}>
+          201 over all program
+        </Typography>
+
+        <ResponsiveContainer
+          height={400}
+          width={500}
+        >
+          <LineChart
+            data={data}
+            margin={{ top: 60, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="value1" stroke="#c2185b" />
+            <Line type="monotone" dataKey="value2" stroke="#4caf50" />
+            <Line type="monotone" dataKey="value3" stroke="#9c27b0" />
+            <Line type="monotone" dataKey="value4" stroke="#ffeb3b" />
+            <Line type="monotone" dataKey="value5" stroke="#2196f3" />
+            {/* Your chart components */}
+          </LineChart>
+        </ResponsiveContainer>
+        <div className={classes.legendContainer}>
+          <div className={classes.legendItem}>
+            <div
+              className={classes.legendColorBox}
+              style={{ backgroundColor: "#c2185b" }}
+            ></div>
+            <Typography className={classes.legendText}>Name</Typography>
+            <Typography className={classes.legendValue}>500</Typography>
+          </div>
+          <div className={classes.legendItem}>
+            <div
+              className={classes.legendColorBox}
+              style={{ backgroundColor: "#4caf50" }}
+            ></div>
+            <Typography className={classes.legendText}>Name</Typography>
+            <Typography className={classes.legendValue}>500</Typography>
+          </div>
+          <div className={classes.legendItem}>
+            <div
+              className={classes.legendColorBox}
+              style={{ backgroundColor: "#9c27b0" }}
+            ></div>
+            <Typography className={classes.legendText}>Name</Typography>
+            <Typography className={classes.legendValue}>500</Typography>
+          </div>
+          <div className={classes.legendItem}>
+            <div
+              className={classes.legendColorBox}
+              style={{ backgroundColor: "#ffeb3b" }}
+            ></div>
+            <Typography className={classes.legendText}>Name</Typography>
+            <Typography className={classes.legendValue}>500</Typography>
+          </div>
+          <div className={classes.legendItem}>
+            <div
+              className={classes.legendColorBox}
+              style={{ backgroundColor: "#2196f3" }}
+            ></div>
+            <Typography className={classes.legendText}>Name</Typography>
+            <Typography className={classes.legendValue}>500</Typography>
+          </div>
+        </div>
+      </Container>
     </div>
   );
 }

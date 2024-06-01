@@ -13,7 +13,6 @@ import {
   useMediaQuery,
   useTheme,
   IconButton,
-  Container,
 } from "@material-ui/core";
 import {
   DashboardOutlined,
@@ -34,11 +33,19 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   drawer: {
-    width: drawerWidth,
-    [theme.breakpoints.up("sm")]: {},
+    [theme.breakpoints.up("sm")]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
   drawerPaper: {
     width: drawerWidth,
+  },
+  drawerHidden: {
+    [theme.breakpoints.down("sm")]: {
+      width: 0,
+      display: "none",
+    },
   },
   root: {
     display: "flex",
@@ -51,16 +58,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#01204E",
   },
   title: {
-    padding: theme.spacing(2),
     flexGrow: 1,
     fontSize: theme.spacing(3),
     fontWeight: "bold",
   },
   appbar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
     },
   },
   toolbar: theme.mixins.toolbar,
@@ -80,17 +85,14 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     display: "flex",
     boxShadow: "0px 2px 2px -1px gray",
+    [theme.breakpoints.up("md")]: {
+      width: drawerWidth,
+    },
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       display: "none",
-    },
-  },
-  appBarShift: {
-    [theme.breakpoints.up("sm")]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
     },
   },
   listItem: {
@@ -107,14 +109,17 @@ const useStyles = makeStyles((theme) => ({
     color: "#FFFFFF",
   },
   outletMargin: {
-    marginLeft:50,
+    marginLeft: 0,
+    [theme.breakpoints.up("md")]: {
+      marginLeft: drawerWidth,
+    },
   },
 }));
 
 function Layout() {
   const classes = useStyles();
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -150,12 +155,9 @@ function Layout() {
 
   return (
     <div className={classes.root}>
-      <AppBar
-        className={isSmallScreen ? classes.appBarShift : classes.appbar}
-        elevation={0}
-      >
+      <AppBar position="fixed" className={classes.appbar} elevation={0}>
         <Toolbar className={classes.toolbarback}>
-          {isSmallScreen && (
+          {isMediumScreen && (
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -169,23 +171,24 @@ function Layout() {
           <Typography className={classes.title}>
             {location.pathname.split("/").pop()}
           </Typography>
-          <div className={classes.iconButton}>
-            <IconButton className={classes.iconButton}>
-              <NotificationsIcon />
-            </IconButton>
-          </div>
-          <div className={classes.iconButton}>
-            <IconButton className={classes.iconButton}>
-              <Person />
-            </IconButton>
-          </div>
+          <IconButton className={classes.iconButton}>
+            <NotificationsIcon />
+          </IconButton>
+          <IconButton className={classes.iconButton}>
+            <Person />
+          </IconButton>
         </Toolbar>
       </AppBar>
-      <nav className={classes.drawer}>
+      <nav
+        className={`${classes.drawer} ${
+          isMediumScreen ? classes.drawerHidden : ""
+        }`}
+        aria-label="mailbox folders"
+      >
         <Drawer
-          variant={isSmallScreen ? "temporary" : "permanent"}
+          variant={isMediumScreen ? "temporary" : "permanent"}
           anchor="left"
-          open={isSmallScreen ? mobileOpen : true}
+          open={isMediumScreen ? mobileOpen : true}
           onClose={handleDrawerToggle}
           classes={{ paper: classes.drawerPaper }}
           ModalProps={{
@@ -195,7 +198,7 @@ function Layout() {
           <div>
             <Typography variant="h6" noWrap className={classes.logoContainer}>
               <img src={logo} alt="T-Movies Logo" className={classes.logo} />
-              <span className={classes.movie}> T-Movie</span>
+              <span className={classes.movie}>T-Movie</span>
             </Typography>
           </div>
 
@@ -208,7 +211,7 @@ function Layout() {
                 className={
                   location.pathname === item.path
                     ? `${classes.active} ${classes.listItem}`
-                    : null
+                    : classes.listItem
                 }
               >
                 <ListItemIcon
@@ -219,17 +222,17 @@ function Layout() {
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText
+                  primary={item.text}
                   className={
                     location.pathname === item.path ? classes.active : null
                   }
-                  primary={item.text}
                 />
               </ListItem>
             ))}
           </List>
         </Drawer>
       </nav>
-      <div className={`${classes.page} ${classes.outletMargin}`}>
+      <div className={classes.page}>
         <div className={classes.toolbar}></div>
         <Outlet />
       </div>

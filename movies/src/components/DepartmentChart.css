@@ -1,0 +1,16 @@
+.chart-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.chart-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  font-weight: bold;
+  color: #01204E;
+  text-align: center;
+}
