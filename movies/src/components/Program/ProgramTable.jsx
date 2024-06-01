@@ -16,18 +16,17 @@ import {
   Visibility as ViewIcon,
   Cancel as DeactiveIcon,
 } from "@material-ui/icons";
-
-import updown from "../../images/updown.png";
 import DoneIcon from "@material-ui/icons/Done";
 import axios from "axios";
-import ChannelForm from "./ChannelForm";
-import ChannelView from "./ChannelView";
+import updown from "../../images/updown.png";
+import ProgramForm from "./ProgramForm"; // Make sure the path is correct
+import ProgramView from "./ProgramView";
 
 const useStyles = makeStyles((theme) => ({
   updownIcon: {
     color: "black",
     width: "14px",
-    marginLeft: "15px",
+    marginRight: "15px",
     opacity: 0.6,
   },
   active: {
@@ -56,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ChannelTable = () => {
+const ProgramTable = () => {
   const classes = useStyles();
   const [programs, setPrograms] = useState([]);
   const [selectedProgram, setSelectedProgram] = useState(null);
@@ -69,7 +68,7 @@ const ChannelTable = () => {
 
   const fetchPrograms = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/channels");
+      const response = await axios.get("http://localhost:5000/programs");
       setPrograms(response.data.data);
     } catch (error) {
       console.error("Error fetching programs:", error);
@@ -80,13 +79,12 @@ const ChannelTable = () => {
     row.status = row.status === "Active" ? "Deactive" : "Active";
 
     axios
-      .put(`http://localhost:5000/update-channel/${row.id}`, row)
+      .put(`http://localhost:5000/update-program/${row.id}`, row)
       .then((response) => {
-        console.log(response.data.message);
         fetchPrograms();
       })
       .catch((error) => {
-        console.error("There was an error updating the channel status!", error);
+        console.error("There was an error updating the program status!", error);
       });
   };
 
@@ -95,27 +93,25 @@ const ChannelTable = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedProgram(null);
-  };
-
   const handleDelete = (row) => {
     axios
-      .delete(`http://localhost:5000/delete-channel/${row.id}`)
+      .delete(`http://localhost:5000/delete-program/${row.id}`)
       .then((response) => {
-        console.log(response.data.message);
         fetchPrograms();
       })
       .catch((error) => {
-        console.error("There was an error deleting the channel!", error);
+        console.error("There was an error deleting the program!", error);
       });
-    window.location.reload();
   };
 
   const handleView = (row) => {
     setSelectedProgram(row);
     setIsViewOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedProgram(null);
   };
   const handleColoseView = () => {
     setIsViewOpen(false);
@@ -128,15 +124,33 @@ const ChannelTable = () => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>ID</TableCell>
               <TableCell>
-                Name
                 <img
                   src={updown}
                   alt=""
-                  srcset=""
+                  srcSet=""
                   className={classes.updownIcon}
-                  style={{ marginLeft: "10px" }}
                 />
+                Title
+              </TableCell>
+              <TableCell>
+                <img
+                  src={updown}
+                  alt=""
+                  srcSet=""
+                  className={classes.updownIcon}
+                />
+                Duration
+              </TableCell>
+              <TableCell>
+                <img
+                  src={updown}
+                  alt=""
+                  srcSet=""
+                  className={classes.updownIcon}
+                />
+                Description
               </TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Action</TableCell>
@@ -144,8 +158,11 @@ const ChannelTable = () => {
           </TableHead>
           <TableBody>
             {programs.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell>{row.name}</TableCell>
+              <TableRow key={row.id}>
+                <TableCell>{row.id}</TableCell>
+                <TableCell>{row.title}</TableCell>
+                <TableCell>{row.duration}</TableCell>
+                <TableCell>{row.description}</TableCell>
                 <TableCell>
                   {row.status === "Active" ? (
                     <Button
@@ -185,12 +202,12 @@ const ChannelTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <ChannelForm
+      <ProgramForm
         open={isModalOpen}
         handleClose={handleCloseModal}
         program={selectedProgram}
       />
-      <ChannelView
+      <ProgramView
         open={isViewOpen}
         handleClose={handleColoseView}
         program={selectedProgram}
@@ -199,4 +216,4 @@ const ChannelTable = () => {
   );
 };
 
-export default ChannelTable;
+export default ProgramTable;
