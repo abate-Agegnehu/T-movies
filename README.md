@@ -26,20 +26,18 @@ CREATE TABLE IF NOT EXISTS channel (
 
 to run server first  install those package
 
+
+
+change the directory path 
+cd server/
 npm install cors
+node server.js
+open new terminal tab and change the directory path 
+
+cd movies/
 npm i react-router-dom
 npm i axios
 npm i recharts
-
-change the directory path 
-
-cd movies/
-cd src/
-cd server/
-node server.js
-
-
-open new terminal tab and change the directory path 
-
-cd movies
 npm start
+
+
