@@ -29,6 +29,7 @@ to run server first  install those package
 npm install cors
 npm i react-router-dom
 npm i axios
+npm i recharts
 
 change the directory path 
 
