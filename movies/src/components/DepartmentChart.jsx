@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     position: "relative",
     width: "65%",
-    margin: "34px",
+    margin: "90px 34px 90px 34px",
   },
   chartTitle: {
     position: "absolute",
-    top: "0",
+    top: "-50px",
     left: "0",
     backgroundColor: "#000",
     color: "#fff",

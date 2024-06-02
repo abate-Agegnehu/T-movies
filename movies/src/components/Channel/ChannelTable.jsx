@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, Switch, makeStyles } from "@material-ui/core";
 import {
   Table,
   TableBody,
@@ -62,6 +62,7 @@ const ChannelTable = () => {
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   useEffect(() => {
     fetchPrograms();
@@ -78,6 +79,7 @@ const ChannelTable = () => {
 
   const handleStatus = (row) => {
     row.status = row.status === "Active" ? "Deactive" : "Active";
+    setIsChecked(!isChecked);
 
     axios
       .put(`http://localhost:5000/update-channel/${row.id}`, row)
@@ -156,6 +158,7 @@ const ChannelTable = () => {
                     >
                       <DoneIcon color="success" />
                       Active
+                      <Switch checked={isChecked} style={{ color: "green" }} />
                     </Button>
                   ) : (
                     <Button
@@ -166,6 +169,7 @@ const ChannelTable = () => {
                     >
                       <DeactiveIcon color="error" />
                       Deactive
+                      <Switch checked={isChecked} style={{ color: "red" }} />
                     </Button>
                   )}
                 </TableCell>

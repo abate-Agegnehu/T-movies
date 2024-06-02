@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, Switch, makeStyles } from "@material-ui/core";
 import {
   Table,
   TableBody,
@@ -61,6 +61,7 @@ const ProgramTable = () => {
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   useEffect(() => {
     fetchPrograms();
@@ -77,7 +78,7 @@ const ProgramTable = () => {
 
   const handleStatus = (row) => {
     row.status = row.status === "Active" ? "Deactive" : "Active";
-
+    setIsChecked(!isChecked);
     axios
       .put(`http://localhost:5000/update-program/${row.id}`, row)
       .then((response) => {
@@ -173,6 +174,7 @@ const ProgramTable = () => {
                     >
                       <DoneIcon color="success" />
                       Active
+                      <Switch checked={isChecked} style={{ color: "green" }} />
                     </Button>
                   ) : (
                     <Button
@@ -183,6 +185,7 @@ const ProgramTable = () => {
                     >
                       <DeactiveIcon color="error" />
                       Deactive
+                      <Switch checked={isChecked} style={{ color: "red" }} />
                     </Button>
                   )}
                 </TableCell>

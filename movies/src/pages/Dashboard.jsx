@@ -63,11 +63,10 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     position: "relative",
     width: "94%",
-   
   },
   chartTitle: {
     position: "absolute",
-    top: "0",
+    top: "-40px",
     left: "0",
     backgroundColor: "#000",
     color: "#fff",
@@ -132,7 +131,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "18px",
     opacity: 0.8,
   },
-  
 }));
 
 function Dashboard() {
